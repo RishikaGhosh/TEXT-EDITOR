@@ -11,7 +11,8 @@ Also, in a text editor, you are able to perform the **undo operation** to retrie
 
 So, my idea was to use the push, pull operations to achieve these 3 basic tasks.
 ## The Logic
-### Using Buffer
+### Inside stack.js
+#### Using Buffer
 In the stack constructor, I have included a buffer.
 ``` js
 this.buffer = 4;
@@ -19,4 +20,39 @@ this.buffer = 4;
 * Buffer objects are used to represent a fixed length sequence of bytes.
 * It restricts the the number of undo operations done by the stack.
 
-So basically, it makes sure that the undo operations are performed sequentially.
+So basically, it makes sure that the undo operations are performed **sequentially**.
+#### The Push() operation
+The push operation used in this project is similar to the basic push() operation of a stack with some slight changes.
+``` js
+    push(type, char){
+        if(this.isEmpty()){
+            if(type===0)
+                this.stack.push([type, char]);
+        } else{
+            let
+            tmp = this.top();
+            if(tmp[0]===type && tmp[1].length < this.buffer){
+                let top = this.pop();
+                top[1] = char + top[1];
+                this.stack.push(top);
+            } else{
+                this.stack.push([type, char]);
+            }
+        }
+        this.size++;
+    }
+   ```
+ * The **type** variable is used to store two kinds of operations
+   * push - 0
+   * pop - 1
+ * It was important to differentiate the two operations in this function like this as the undo operation messes up the order in which the elements were inserted in the stack, once they are popped.
+ * Therefore, if we want to push back the popped elements using the undo operation, we need to reverse the order 
+     ``` js
+     if(tmp[0]===type && tmp[1].length < this.buffer){
+                let top = this.pop();
+                top[1] = char + top[1];
+                this.stack.push(top);
+            }
+    ```
+  So, the type value decides whether we need to reverse the order of the elements pushed in the stack after we use the undo operation.
+  
