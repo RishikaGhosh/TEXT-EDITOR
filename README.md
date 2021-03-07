@@ -16,9 +16,7 @@ In the stack constructor, I have included a buffer.
 ``` js
 this.buffer = 4;
 ```
-1.Buffer objects are used to represent a fixed length sequence of bytes.
-
-
-2.It restricts the the number of undo operations done by the stack.
+* Buffer objects are used to represent a fixed length sequence of bytes.
+* It restricts the the number of undo operations done by the stack.
 
 So basically, it makes sure that the undo operations are performed sequentially.
